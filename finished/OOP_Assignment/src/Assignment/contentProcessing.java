@@ -236,7 +236,7 @@ public class contentProcessing extends JFrame implements ActionListener
 		}
 		
 		//the content ends before the end entry tag </entry>, the length is between the start and the end.
-		endContent = i - 1;
+		endContent = i;
 		postlength = endContent - startContent;
 		
 		//Output length is content + Author name
