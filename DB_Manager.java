@@ -22,19 +22,20 @@ import javax.swing.JTextField;
 public class DB_Manager extends JFrame implements ActionListener
 {
 	//Declare global attributes
-	JLabel changeText;
-	JLabel submitText;
+	private JLabel changeText;
+	private JLabel submitText;
 	
-	JTextField textToChange;
+	private JTextField textToChange;
+	private JScrollPane scrollList;
 	
-	JButton add;
-	JButton remove;
-	JButton saveToFile;
+	private JButton add;
+	private JButton remove;
+	private JButton saveToFile;
 	
 	//String array holding all the Blasphemies
 	String cursewords[];
 	
-	JList DatabaseContent;
+	JList DB_Content;
 	
 	public DB_Manager()
 	{
@@ -64,12 +65,12 @@ public class DB_Manager extends JFrame implements ActionListener
 		remove.addActionListener(this);
 		
 		//View Database in a list
-		DatabaseContent = new JList(this.displayDB(this.cursewords));
-		add(DatabaseContent);
+		DB_Content = new JList(this.displayDB(this.cursewords));
+		add(DB_Content);
 		
-		//Add scrollbar to Database DisplayWords
-		JScrollPane ScrollingList = new JScrollPane(DatabaseContent);
-		add(ScrollingList);
+		//Add scroll bar to Database DisplayWords
+		scrollList = new JScrollPane(DB_Content);
+		add(scrollList);
 		
 		submitText = new JLabel("Save Changes to Swear Database : ");
 		add(submitText);
@@ -81,10 +82,7 @@ public class DB_Manager extends JFrame implements ActionListener
 		//once all items added, set objects visible.
 		setVisible(true);
 	}//End constructor
-
-
-
-	@Override
+	
 	public void actionPerformed(ActionEvent e) 
 	{
 		
@@ -99,15 +97,18 @@ public class DB_Manager extends JFrame implements ActionListener
 				//Add entry to array
 				this.cursewords = this.addEntry(newEntry.toLowerCase());
 				//Refresh DisplayWords
-				DatabaseContent.setListData(this.displayDB(this.cursewords));
+				DB_Content.setListData(this.displayDB(this.cursewords));
 				
 				//Refresh Text Field and give feedback to user
 				textToChange.setText("");
 				JOptionPane.showMessageDialog(this, "Curse Word Added");
+				
 			}
 			else
 			{
+				
 				JOptionPane.showMessageDialog(this, "Cannot Add; Field Empty.");
+				
 			}
 			
 		}//End Add Button
@@ -123,30 +124,38 @@ public class DB_Manager extends JFrame implements ActionListener
 				//Delete the entry you wish to remove
 				cursewords = deleteEntry(removeEntry.toLowerCase());
 				//Refresh DisplayWords
-				DatabaseContent.setListData(this.displayDB(this.cursewords));
+				DB_Content.setListData(this.displayDB(this.cursewords));
 				
 				//Refresh Text Field and give feedback to user
 				textToChange.setText("");
 				JOptionPane.showMessageDialog(this, "Curse Word Removed");
+				
 			}
 			else
 			{
+				
 				JOptionPane.showMessageDialog(this, "Cannot remove; Field Empty.");
+				
 			}
+			
 		}//End Remove Button
 		
 		if(e.getSource() == saveToFile) //Submit Button Clicked 
 		{
-			FileManager badwordsfile = new FileManager("cursewords.txt");
-			badwordsfile.connectToFile();
-			badwordsfile.writeString(cursewords); // write changes
+			//connect to file, write to file, then inform user.
+			FileManager curseWordsFile = new FileManager("cursewords.txt");
+			curseWordsFile.connectToFile();
+			curseWordsFile.writeString(cursewords); // write changes
+			
 			JOptionPane.showMessageDialog(this, "Changes Saved");
+			
 		}//End Submit Button
 		
 	}//End of Action Listening
 	
 	public String[] addEntry(String Adding)
 	{
+		
 		String input[] = this.cursewords;
 		String output[] = new String[input.length+1]; // new string one element bigger
 		
@@ -163,20 +172,24 @@ public class DB_Manager extends JFrame implements ActionListener
 				//ignore case since VAR sent in to lower case
 				output[j] = Adding;
 				j++;
-				replace = true; // replacement cannot be made again
+				replace = true;
+				
 			}
 			output[j] = input[i];
 			i++;
 			j++;
+			
 		}
 		if(replace == false)
 		{
 			//If replace still not occurred, add to bottom.
 			output[j] = Adding.toLowerCase();
+			
 		}
+		
 		return output;
 		
-	}
+	}//End Add String Entry
 	
 	public String[] deleteEntry(String deleted)
 	{
@@ -194,6 +207,7 @@ public class DB_Manager extends JFrame implements ActionListener
 			{
 				//skip (not?) offending line
 				i++;
+				
 			}
 			//place the input item into output.
 			output[j] = input[i];
@@ -205,17 +219,20 @@ public class DB_Manager extends JFrame implements ActionListener
 		
 		return output;
 		
-	}
+	}//End Delete an Entry
 	
 	//Display String array on screen
 	public String[] displayDB(String input[])
 	{
+		
 		int length=0;
 		
 		//Calculate array length
 		while (input[length] != null)
 		{
+			
 			length++;
+			
 		}
 		
 		//New string with length of used elements
@@ -224,7 +241,9 @@ public class DB_Manager extends JFrame implements ActionListener
 		{
 			//Populate new string with used elements of old
 			output[i] = input[i]; 
+			
 		}
+		
 		return output;
 	}//End DisplayWords
 	

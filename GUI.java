@@ -15,26 +15,28 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class GUI extends JFrame implements ActionListener
 {
 	//Declare global attributes
 	private JLabel inputSelect;
+	
 	private JFileChooser findPath;
+	
 	private JButton browse;
-	private JLabel Editortext;
-	private JButton Editorstart;
-	private JButton ScannerButton;
+	private JButton editorStart;
+	private JButton scannerButton;
 	
 	public GUI()
 	{
 		//set screen
-		super("Select Screen");
+		super("File Selection");
 		setSize(600,150);
 		setLayout(new FlowLayout());
 		
 		//fill screen
-		this.inputSelect = new JLabel("File Selection");
+		this.inputSelect = new JLabel("Select a file.");
 		add(inputSelect);//Label
 		
 		this.findPath = new JFileChooser();
@@ -43,13 +45,13 @@ public class GUI extends JFrame implements ActionListener
 		add(browse);//button
 		this.browse.addActionListener(this);
 		
-		this.ScannerButton = new JButton("Scan Post");
-		add(ScannerButton);//button
-		ScannerButton.addActionListener(this);
+		this.scannerButton = new JButton("Scan Post");
+		add(scannerButton);//button
+		scannerButton.addActionListener(this);
 		
-		this.Editorstart = new JButton("Edit Curse Words");
-		add(Editorstart);//button
-		this.Editorstart.addActionListener(this);
+		this.editorStart = new JButton("Edit Curse Words");
+		add(editorStart);//button
+		this.editorStart.addActionListener(this);
 		
 		//once all items added, set objects visible.
 		setVisible(true);
@@ -57,28 +59,36 @@ public class GUI extends JFrame implements ActionListener
 	}//End constructor
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent e)
+	{
+		
 		if (e.getSource() == browse)
 		{
 			// browse button - create input selector
 			findPath.showOpenDialog(this); 
 		}
 		
-		if (e.getSource() == Editorstart) 
+		if (e.getSource() == editorStart) 
 		{
 			//open DataBase editing GUI
-			DB_Manager de1 = new DB_Manager();
+			DB_Manager databaseGUI = new DB_Manager();
 		}
 		
-		if (e.getSource() == ScannerButton) // scan file
+		if (e.getSource() == scannerButton)
 		{
+			
 			//only if a path is found
 			if (findPath.getSelectedFile() != null)
 			{
 				//look for abusive content in a post.
 				contentProcessing post = new contentProcessing(findPath.getSelectedFile()); 
 			}
+			
+			else
+			{
+				JOptionPane.showMessageDialog(this, "file not selected");
+			}//end if file not found.
+			
 		}
 		
 	}//the end of listening to all possible actions

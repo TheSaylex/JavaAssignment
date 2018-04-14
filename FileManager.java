@@ -15,10 +15,10 @@ import java.util.Scanner;
 public class FileManager 
 {
 	//Declare global attributes
-	String fileName;
-	File myFile;
-	Scanner myScanner;
-    PrintWriter myInput;
+	private String fileName;
+	private File myFile;
+	private Scanner myScanner;
+    private PrintWriter myInput;
 	
 	// Constructor
 	FileManager (String fileName)
@@ -38,7 +38,7 @@ public class FileManager
 	String[] readFile()
 	{
 		//create a variable to store lines.
-		String[] values = new String[1000];
+		String[] values = new String[300];
 	    
 		try
 		{
