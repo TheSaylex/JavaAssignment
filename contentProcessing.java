@@ -168,7 +168,7 @@ public class contentProcessing extends JFrame implements ActionListener
 	public void UpdateDisplay()
 	{
 		//update the information on screen.
-		previewPost = this.movePost(this.allContent);
+		previewPost = this.movePost();
 		this.postContent.setText(Arrays.toString(previewPost));
 		this.checkedValues.setText("Post has not been scanned yet");
 		this.position.setText("Post Number " + Integer.toString(this.currentPost) + " / "+ Integer.toString(this.totalPosts) );
@@ -188,7 +188,7 @@ public class contentProcessing extends JFrame implements ActionListener
 		
 	}
 	
-	public String[] movePost(String[] allPosts)
+	public String[] movePost()
 	{
 		//Initialize local variables
 		int i = 0;
@@ -204,10 +204,10 @@ public class contentProcessing extends JFrame implements ActionListener
 		boolean found = false;
 		
 		//Go through the Length of all posts and Find the preview Post.
-		while ((i < allPosts.length) && (found == false))
+		while ((i < this.allContent.length) && (found == false))
 		{
 			//if an Author tag is found
-			if (allPosts[i].contains("<Author>"))
+			if (this.allContent[i].contains("<Author>"))
 			{
 				//Increase the current post.
 				postnum++;
@@ -224,19 +224,19 @@ public class contentProcessing extends JFrame implements ActionListener
 		}//Found the preview Post
 		
 		//After <Author> Authors name
-		authorName = allPosts[i];
+		authorName = this.allContent[i];
 		//Skip author name and <Entry> to Start of Content
 		i = i + 2;
 		startContent = i;
 		
-		while (allPosts[i].contains("</Entry>") == false) //find end of post
+		while (this.allContent[i].contains("</Entry>") == false) //find end of post
 		{
 			i++;
 			
 		}
 		
 		//the content ends before the end entry tag </entry>, the length is between the start and the end.
-		endContent = i - 1;
+		endContent = i;
 		postlength = endContent - startContent;
 		
 		//Output length is content + Author name
@@ -247,7 +247,7 @@ public class contentProcessing extends JFrame implements ActionListener
 		for (int j = 1; j < postlength+1;j++) //Populate Output with author name + Post Content  
 		{
 			//Put Preview content into the output.
-			output[j] = allPosts[i];
+			output[j] = this.allContent[i];
 			i++;
 		}
 		
